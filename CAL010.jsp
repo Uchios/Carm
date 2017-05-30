@@ -114,7 +114,6 @@
 			}
 			}
 		%>
-		<br> <br> <br> <br> <a href="./CMM030.jsp">ホーム</a>
 	</div>
 
 </body>

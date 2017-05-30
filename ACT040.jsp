@@ -43,7 +43,6 @@
 			<input type="submit" value="登録" class="decision">
 		</form>
 
-		<br> <br> <br> <br> <a href="./CMM030.jsp">ホーム</a>
 	</div>
 
 </body>
