@@ -625,6 +625,43 @@ public class DaoCarmPersonal {
 		return result;
 	}
 
+	// タグ毎に利用額を集計し降順に並べる（円グラフ生成用）
+	public List<EntityAnalyticalData> getAnalyticalDateForPieChart(int cardId, Date startDate,
+			Date endDate) {
+		List<EntityAnalyticalData> eadList = new ArrayList<EntityAnalyticalData>();
+		String addSql = "";
+		if (cardId != -1) {
+			addSql = "AND uses.card_id = ? ";
+		}
+		String sql = "SELECT tag_name,sum(payment) FROM tags "
+				+ "LEFT OUTER JOIN uses ON tags.use_id = uses.use_id "
+				+ "WHERE use_date >= ? AND use_date <= ? " + addSql
+				+ "GROUP BY tag_name ORDER BY SUM(payment) DESC";
+
+		try (Connection con = getConnection();
+				PreparedStatement pst = con.prepareStatement(sql);) {
+
+			pst.setDate(1, startDate);
+			pst.setDate(2, endDate);
+			if (cardId != -1) {
+				pst.setInt(3, cardId);
+			}
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				EntityAnalyticalData ead = new EntityAnalyticalData();
+				ead.setTagName(rs.getString("tag_name"));
+				ead.setPayment(rs.getInt("sum"));
+				eadList.add(ead);
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return eadList;
+	}
+
 	// 新規ユーザ作成時の処理を行う
 	public String createTables() {
 		String result = "crt";
