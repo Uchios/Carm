@@ -20,6 +20,7 @@
 		Integer userId = (Integer) session.getAttribute("user_id");
 		String alert = (String) request.getAttribute("alert");
 		List<EntityAnalyticalData>eadList = (ArrayList<EntityAnalyticalData>)request.getAttribute("ead_list");
+		List<EntityAnalyticalData>eadList2 = (ArrayList<EntityAnalyticalData>)request.getAttribute("ead_list2");
 		List<EntityCard>ecList = (ArrayList<EntityCard>)request.getAttribute("ec_list");
 		String cardName = (String)request.getAttribute("card_name");
 		Date endDate = (Date) request.getAttribute("end_date");
@@ -75,11 +76,11 @@
 			</SELECT>
 		</form>
 		</div>
-	<!--Load the AJAX API-->
+	<!--AJAX APIをロードする-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
    
-      // Load the Visualization API and the piechart package.
+      // Visualization API と　円グラフパッケージをロード
       google.load('visualization', '1.0', {'packages':['corechart']});
      
       // Set a callback to run when the Google Visualization API is loaded.
@@ -90,7 +91,7 @@
       // draws it.
       function drawChart() {
 
-      // Create the data table.
+      // 利用金額データテーブルを作成
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Topping');
       data.addColumn('number', 'Slices');
@@ -100,17 +101,34 @@
         <%}%>
       ]);
 
-      // Set chart options
-      var options = {'title':'金額別比較 （<%=cardName%>）',
+      // 利用回数データテーブルを作成
+      var data2 = new google.visualization.DataTable();
+      data2.addColumn('string', 'Topping');
+      data2.addColumn('number', 'Slices');
+      data2.addRows([
+        <%for(int i = 0 ; i< eadList2.size() ; i++){%>
+        ['<%=eadList2.get(i).getTagName()%>', <%=eadList2.get(i).getCount()%>],
+        <%}%>
+      ]);
+      
+      // 図のオプションを設定
+      var options = {'title':'利用金額で比較 （<%=cardName%>）',
                      'width':600,
                      'height':400};
+      
+      var options2 = {'title':'利用回数で比較 （<%=cardName%>）',
+    		          'width':600,
+                      'height':400};
 
-      // Instantiate and draw our chart, passing in some options.
+      // 図をインスタンス化
       var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
       chart.draw(data, options);
+      var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
+      chart2.draw(data2, options2);
     }
     </script>
 	<div id="chart_div"></div>
+	<div id="chart_div2"></div>
 
 </body>
 </html>

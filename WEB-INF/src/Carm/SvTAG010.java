@@ -73,6 +73,9 @@ public class SvTAG010 extends HttpServlet {
 			// 期間とカードIDを指定して円グラフ用データを取得
 			List<EntityAnalyticalData> eadList = dcp
 					.getAnalyticalDateForPieChart(cardId, startDate, endDate);
+			List<EntityAnalyticalData> eadList2 = dcp
+					.getAnalyticalDateForPieChart2(cardId, startDate, endDate);
+
 			List<EntityCard> ecList = dcp.getCardEntity();
 			EntityCard ec = dcp.getCardEntityByCardId(cardId);
 			String cardName = null;
@@ -83,6 +86,7 @@ public class SvTAG010 extends HttpServlet {
 			}
 
 			req.setAttribute("ead_list", eadList);
+			req.setAttribute("ead_list2",eadList2);
 			req.setAttribute("ec_list", ecList);
 			req.setAttribute("card_name", cardName);
 			req.setAttribute("end_date", endDate);
