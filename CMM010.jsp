@@ -40,7 +40,7 @@
 			ユーザー名：
 			<input type="text" name="user_name">
 			<br> パスワード：
-			<input type="text" name="password">
+			<input type="password" name="password">
 			<br> <br>
 			<input type="submit" value="ログイン" class="login_button">
 		</form>
